@@ -1,0 +1,26 @@
+body {
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+}
+canvas {
+    display:block;
+    margin:20px auto;
+    width:400px;
+    height:200px;
+    border:1px solid #333;
+}
+.controls {
+    width:400px;
+    margin:10px auto;
+}
+.controls > div {
+    border-bottom:1px solid #EEE;
+    padding:5px 0;
+}
+.controls label {
+    width:200px;
+    display:inline-block;
+}
+.controls input {
+    vertical-align:middle;
+}
