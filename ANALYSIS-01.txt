@@ -1,0 +1,51 @@
+Cube Project Analysis
+=====================
+
+Scope
+- Standalone cube app only.
+- Entry point: cube/index.php
+- Runtime script: cube/public/js/dd.js
+
+Current state
+- The project structure is clear for a small graphics demo.
+- Scene code, matrix helpers, canvas drawing, and object models are separated.
+- The recent rotation change already improved the hottest animation path.
+
+Main findings
+1. Resize handling is broken.
+   - Only canvasTop is resized.
+   - canvasGrid and canvasAir keep their old dimensions.
+   - Canvas.resizeCanvas updates object fields, but not the actual <canvas> element width and height.
+
+2. Number-key object selection is broken.
+   - dd.js uses String.fromCharCode(ev.key), but ev.key is already a string.
+   - That makes parseInt unreliable for selecting the active object.
+
+3. The standalone cube app still uses root-level image URLs.
+   - dd.js loads /public/images/air.webp and /public/images/ground.png.
+   - For a standalone /cube/ app, these should be relative to cube.
+
+4. Matrix angle normalization is brittle.
+   - Matrix.m_make_rx / ry / rz only subtract 360 once.
+   - Negative angles or large angles can index outside the precomputed sin/cos arrays.
+
+Fix order
+1. Repair canvas resize behavior in Canvas.js and dd.js. Done.
+2. Repair object selection from number keys in dd.js. Done.
+3. Make image paths standalone-safe in dd.js. Done.
+4. Harden angle normalization in Matrix.js. Done.
+
+Notes
+- Keep changes minimal.
+- Preserve current visual behavior.
+- Validate after each edit slice.
+
+Applied changes
+- Canvas.js now keeps a reference to the real canvas element and updates its width and height during resize.
+- dd.js now resizes canvasTop, canvasGrid, and canvasAir together.
+- dd.js now parses number keys directly from ev.key.
+- dd.js now uses relative image paths for the standalone cube app.
+- Matrix.js now normalizes any degree input safely into the 0..359 range.
+
+Remaining recommendation
+- Run a manual browser check for resize behavior and layer alignment, since this review used static validation only.
