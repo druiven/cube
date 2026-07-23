@@ -42,8 +42,13 @@ let zFar = 10000;
 let zNear = 0.1;
 let q = zFar / (zFar - zNear);
 
-let projectionMatrix = M.m_projection(theta, zFar, zNear, w);
+let projectionMatrix = M.m_projection(theta, zFar, zNear, w, a);
 let vCamera = M.m_eye();
+
+function refreshProjectionMatrix() {
+  a = docHeight / docWidth;
+  projectionMatrix = M.m_projection(theta, zFar, zNear, w, a);
+}
 
 function newRot(axe, rM) {
   let resultMatrix = rM;
@@ -757,11 +762,13 @@ function rp(mini = 1, maxi = 2) {
 }
 
 function resizeCanvas() {
-  let w = innerWidth;
-  let h = innerHeight;
-  canvasTop.resizeCanvas(w, h, w / 2, h - 200);
-  canvasGrid.resizeCanvas(w, h, 0, (2 * h) / 3);
-  canvasAir.resizeCanvas(w, h, 0, 0);
+  docWidth = innerWidth;
+  docHeight = innerHeight;
+  refreshProjectionMatrix();
+
+  canvasTop.resizeCanvas(docWidth, docHeight, docWidth / 2, docHeight - 200);
+  canvasGrid.resizeCanvas(docWidth, docHeight, 0, (2 * docHeight) / 3);
+  canvasAir.resizeCanvas(docWidth, docHeight, 0, 0);
   update();
 }
 /* keyboard */

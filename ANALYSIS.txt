@@ -70,7 +70,12 @@ Second pass findings
    - This is a latent math bug if those helpers are expected to behave consistently.
 
 Second pass recommendation order
-1. Fix projection/aspect handling in Matrix.js and dd.js.
-2. Recompute projection data inside resizeCanvas().
+1. Fix projection/aspect handling in Matrix.js and dd.js. Done.
+2. Recompute projection data inside resizeCanvas(). Done.
 3. Remove the extra circle draw from Canvas.drawRectangle().
 4. Normalize multiplication order in utils.js helper rotations.
+
+Second pass applied
+- Matrix.m_projection now accepts an aspect parameter and applies it to x-axis focal scaling.
+- dd.js now builds projectionMatrix with aspect at startup.
+- dd.js now recomputes docWidth, docHeight, and projectionMatrix inside resizeCanvas().

@@ -52,7 +52,7 @@ class Matrix {
     return m;
   }
 
-  m_projection(theta = Math.PI / 3, zF = 1000, zN = 0.1, w = 1.0) {
+  m_projection(theta = Math.PI / 3, zF = 1000, zN = 0.1, w = 1.0, aspect = 1.0) {
     this.theta = theta;
     this.zNear = zN;
     this.zFar = zF;
@@ -62,7 +62,7 @@ class Matrix {
     this.q = this.zFar / (this.zFar - this.zNear);
 
     let m = [
-      [this.f, 0, 0, 0],
+      [aspect * this.f, 0, 0, 0],
       [0, this.f, 0, 0],
       [0, 0, this.q, -this.zNear * this.q],
       [0, 0, this.w, 0],
