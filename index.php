@@ -16,7 +16,6 @@ Initial PHP here
 <section class="canvas-wrapper" id="canvas-wrapper">
 
 </section>
-<!--<script type="module" src="public/js/nature.js"></script>-->
 <script type="module" src="public/js/dd.js"></script>
 </body>
 </html>

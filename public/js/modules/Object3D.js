@@ -1,4 +1,4 @@
-class Object {
+class Object3D {
     name = [];
     anim = {
         rdeg: 5,
@@ -109,4 +109,4 @@ class Object {
 
 }
 
-export {Object}
+export {Object3D}

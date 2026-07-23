@@ -1,6 +1,7 @@
 class Canvas {
     constructor(id, parentId = 'c-wrapper', width = 100, height = 100, cX = 0, cY = 0, scaling = 1, alpha = 1, zIndex = '0') {
         this.id = id;
+        this.canvasElem = null;
         this.listId = null;
         this.parentId = parentId;
         this.cX = cX;
@@ -32,6 +33,7 @@ class Canvas {
                 canvasElem.height = this.height;
                 canvasElem.style.zIndex = this.zIndex;
 
+                this.canvasElem = canvasElem;
                 this.ctx = canvasElem.getContext('2d');
                 this.ctx.globalAlpha = this.alpha;
                 this.ctx.translate(Math.floor(this.cX), Math.floor(this.cY));
@@ -45,6 +47,10 @@ class Canvas {
 
         this.width = w;
         this.height = h;
+        if (this.canvasElem) {
+            this.canvasElem.width = w;
+            this.canvasElem.height = h;
+        }
         this.setCenter(cx,cy);
         this.clearCanvas();
        // redraw();
