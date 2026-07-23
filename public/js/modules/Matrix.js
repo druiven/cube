@@ -60,9 +60,11 @@ class Matrix {
     this.fov = this.theta;
     this.f = 1 / Math.tan(this.fov / 2); //field of view
     this.q = this.zFar / (this.zFar - this.zNear);
+    let safeAspect = aspect;
+    if (safeAspect === 0) safeAspect = 1;
 
     let m = [
-      [aspect * this.f, 0, 0, 0],
+      [this.f / safeAspect, 0, 0, 0],
       [0, this.f, 0, 0],
       [0, 0, this.q, -this.zNear * this.q],
       [0, 0, this.w, 0],

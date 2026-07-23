@@ -18,6 +18,10 @@ import {
 
 let docWidth = innerWidth;
 let docHeight = innerHeight;
+const baseDocWidth = docWidth;
+const baseDocHeight = docHeight;
+const baseCanvasTopScale = 300;
+const baseAspectRatio = baseDocWidth / baseDocHeight;
 
 let objects = [];
 let maxObj = 15;
@@ -32,7 +36,7 @@ let identityMatrix = M.m_eye();
 let worldMatrix = M.m_eye();
 
 //Projection Matrix
-let a = docHeight / docWidth; //accept ratio
+let a = baseAspectRatio; //keep projection aspect stable
 let theta = Math.PI / 3;
 let fov = theta;
 let f = 1 / Math.tan(fov / 2); //field of view
@@ -46,8 +50,15 @@ let projectionMatrix = M.m_projection(theta, zFar, zNear, w, a);
 let vCamera = M.m_eye();
 
 function refreshProjectionMatrix() {
-  a = docHeight / docWidth;
+  a = baseAspectRatio;
   projectionMatrix = M.m_projection(theta, zFar, zNear, w, a);
+}
+
+function refreshViewportScale() {
+  const widthScale = docWidth / baseDocWidth;
+  const heightScale = docHeight / baseDocHeight;
+  const uniformScale = Math.min(1, widthScale, heightScale);
+  canvasTop.scale = baseCanvasTopScale * uniformScale;
 }
 
 function newRot(axe, rM) {
@@ -372,11 +383,12 @@ let canvasTop = new Canvas(
   docHeight,
   docWidth / 2,
   docHeight,
-  300,
+  baseCanvasTopScale,
   1,
   "500",
 );
 canvasTop.create();
+refreshViewportScale();
 
 let canvasGrid = new Canvas(
   "canvas-grid",
@@ -765,6 +777,7 @@ function resizeCanvas() {
   docWidth = innerWidth;
   docHeight = innerHeight;
   refreshProjectionMatrix();
+  refreshViewportScale();
 
   canvasTop.resizeCanvas(docWidth, docHeight, docWidth / 2, docHeight - 200);
   canvasGrid.resizeCanvas(docWidth, docHeight, 0, (2 * docHeight) / 3);
