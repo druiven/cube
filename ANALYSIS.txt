@@ -49,3 +49,28 @@ Applied changes
 
 Remaining recommendation
 - Run a manual browser check for resize behavior and layer alignment, since this review used static validation only.
+
+Second pass findings
+1. Projection math does not use aspect ratio.
+   - dd.js computes an aspect value, but Matrix.m_projection is called without it.
+   - That means wide and tall windows can stretch the scene.
+
+2. Resize does not rebuild projection data.
+   - The canvas sizes now update correctly.
+   - But dd.js does not recompute docWidth, docHeight, aspect ratio, or projectionMatrix on resize.
+   - So a resized window can still render with stale camera math.
+
+3. Canvas.drawRectangle has surprising behavior.
+   - After drawing a rectangle, it also draws and fills a large circle at the origin.
+   - That is probably leftover debug code and makes the method unsafe as a general helper.
+
+4. Rotation helper order is inconsistent in utils.js.
+   - RotateX multiplies M * R.
+   - RotateY and RotateZ multiply R * M.
+   - This is a latent math bug if those helpers are expected to behave consistently.
+
+Second pass recommendation order
+1. Fix projection/aspect handling in Matrix.js and dd.js.
+2. Recompute projection data inside resizeCanvas().
+3. Remove the extra circle draw from Canvas.drawRectangle().
+4. Normalize multiplication order in utils.js helper rotations.
